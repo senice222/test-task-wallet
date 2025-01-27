@@ -48,8 +48,8 @@ async function main() {
 
 async function createWallet() {
   try {
-    const response = await axios.post(`${API_URL}/wallets`, {userId: config.userId});
-    console.log('Создан новый кошелек:', response.data.address);
+    const {data} = await axios.post(`${API_URL}/wallets`, {userId: config.userId});
+    console.log('Создан новый кошелек:', data.address);
   } catch (error: any) {
     console.error('Ошибка при создании кошелька:', error.message);
   }
@@ -57,16 +57,12 @@ async function createWallet() {
 
 async function transferFunds() {
   try {
-    const walletsResponse = await axios.get(`${API_URL}/wallets`);
-    const userWallets = walletsResponse.data;
+    const {data: userWallets} = await axios.get(`${API_URL}/wallets`);
 
     if (userWallets.length === 0) {
       console.log('У вас нет доступных кошельков');
       return;
     }
-
-    const allWalletsResponse = await axios.get(`${API_URL}/wallets/all`);
-    const allWallets = allWalletsResponse.data;
 
     const { fromWallet } = await inquirer.prompt([
       {
@@ -88,7 +84,7 @@ async function transferFunds() {
         name: 'toAddress',
         message: 'Выберите кошелек получателя:',
         choices: [
-          ...allWallets
+          ...userWallets
             .filter((w: WalletDto) => w.address !== fromWallet)
             .map((w: WalletDto) => ({
               name: `Кошелек ${w.address.slice(0, 8)}... (Баланс: ${w.balance})`,
@@ -143,7 +139,7 @@ async function transferFunds() {
       return;
     }
 
-    const response = await axios.post(`${API_URL}/transactions`, {
+    const {data} = await axios.post(`${API_URL}/transactions`, {
       fromWallet,
       toWallet: targetAddress,
       amount,
@@ -154,7 +150,7 @@ async function transferFunds() {
     console.log(`Отправлено: ${amount}`);
     console.log(`С кошелька: ${fromWallet}`);
     console.log(`На кошелек: ${targetAddress}`);
-    console.log(`Статус: ${response.data.status}`);
+    console.log(`Статус: ${data.status}`);
   } catch (error: any) {
     console.error('Ошибка при переводе средств:', error.message);
   }
@@ -174,13 +170,13 @@ async function createUser() {
       }
     ]);
 
-    const response = await axios.post(`${API_URL}/users`, { username });
-    console.log('Пользователь создан:', response.data);
+    const {data} = await axios.post(`${API_URL}/users`, { username });
+    console.log('Пользователь создан:', data);
     
-    config.setUserId(response.data._id);
+    config.setUserId(data._id);
     console.log('ID пользователя установлен:', config.userId);
     
-    return response.data._id;
+    return data._id;
   } catch (error: any) {
     console.error('Ошибка при создании пользователя:', error.message);
     return null;

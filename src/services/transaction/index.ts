@@ -13,7 +13,7 @@ app.post('/transactions', async (req, res) => {
 
     const sourceWallet = await Wallet.findOne({ address: fromWallet });
     const targetWallet = await Wallet.findOne({ address: toWallet });
-
+    console.log(sourceWallet, targetWallet)
     if (!sourceWallet || !targetWallet) {
       return res.status(404).json({ error: 'Wallet not found' });
     }
