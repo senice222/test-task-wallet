@@ -25,7 +25,8 @@ app.post('/wallets', async (req, res) => {
 
 app.get('/wallets/user/:userId', async (req, res) => {
   try {
-    const wallets = await Wallet.find({ userId: req.params.userId });
+    const userId = config.userId
+    const wallets = await Wallet.find({ userId });
     res.json(wallets);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch wallets' });

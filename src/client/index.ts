@@ -58,7 +58,6 @@ async function createWallet() {
 async function transferFunds() {
   try {
     const {data: userWallets} = await axios.get(`${API_URL}/wallets`);
-
     if (userWallets.length === 0) {
       console.log('У вас нет доступных кошельков');
       return;

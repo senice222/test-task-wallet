@@ -17,7 +17,7 @@ const readUserId = () => {
 
 export const config = {
   port: process.env.PORT || 3000,
-  mongoUri: process.env.MONGO_URI || 'mongodb://localhost:27017/gateway',
+  mongoUri: process.env.MONGO_URI || 'mongodb+srv://asdfqqqwsf12311:io3ycEPY6SBhoYr0@cluster0.sg3c1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
   services: {
     wallet: process.env.WALLET_SERVICE_URL || 'http://localhost:3001',
     user: process.env.USER_SERVICE_URL || 'http://localhost:3002',
