@@ -1,6 +1,6 @@
 import express from 'express';
 import axios from 'axios';
-import { config } from '../config';
+import { config, readUserId } from '../config';
 import { checkAuth } from '../middleware/auth';
 
 const router = express.Router();
@@ -17,6 +17,8 @@ router.post('/wallets', async (req, res, next) => {
 
 router.get('/wallets', checkAuth, async (req, res, next) => {
   try {
+    config.userId = readUserId();
+    
     const {data} = await axios.get(`${config.services.wallet}/wallets/user/${config.userId}`);
     res.json(data);
   } catch (error) {

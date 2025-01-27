@@ -6,10 +6,9 @@ dotenv.config();
 
 const USER_ID_FILE = path.join(__dirname, '../.userid');
 
-const readUserId = () => {
+export const readUserId = () => {
   if (fs.existsSync(USER_ID_FILE)) {
-    const id = fs.readFileSync(USER_ID_FILE, 'utf-8').trim(); 
-    console.log('Read userId from file:', id);
+    const id = fs.readFileSync(USER_ID_FILE, 'utf-8').trim();
     return id;
   }
   return undefined;
@@ -30,6 +29,3 @@ export const config = {
     console.log('Saved userId:', id);
   }
 };
-
-// Добавим логирование текущего значения
-console.log('Current userId:', config.userId); 

@@ -25,7 +25,8 @@ app.post('/wallets', async (req, res) => {
 
 app.get('/wallets/user/:userId', async (req, res) => {
   try {
-    const userId = config.userId
+    const {userId} = req.params;
+    console.log("userId", userId)
     const wallets = await Wallet.find({ userId });
     res.json(wallets);
   } catch (error) {
